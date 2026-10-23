@@ -15,19 +15,27 @@ Dashboard penjualan interaktif untuk UMKM alat tulis kantor (ATK), dibuat dengan
 ## Tentang Proyek
 
 - **Data:** 10.005 transaksi, Januari 2022 – Juni 2025
-- **Alat:** Microsoft Excel (PivotTable, PivotChart, Slicer, Timeline)
+- **Alat:** Microsoft Excel (Power Query, PivotTable, PivotChart, Slicer, Timeline)
 
 ## Langkah Pengerjaan
 
-1. **Persiapan data:** muat data transaksi mentah ke sheet `Data`.
-2. **Pemeriksaan dan pembersihan:** cek nilai kosong, duplikat, tipe kolom (tanggal, angka), dan penulisan nama produk, kota, serta status.
-3. **Pembuatan PivotTable:** satu PivotTable per ukuran di sheet `Pivot` (penjualan bulanan, metode pembayaran, transaksi per kota, penjualan per produk).
+1. **Persiapan data:** simpan data transaksi mentah di sheet `Data` tanpa diubah, sebagai arsip dan pembanding.
+2. **Pembersihan data dengan Power Query:** muat data lewat **Data > From Table/Range**, lalu kerjakan langkah berikut di Power Query Editor:
+   - Promosikan baris pertama menjadi header.
+   - Ubah tipe kolom (tanggal, angka bulat, mata uang, dan teks).
+   - Hapus baris duplikat.
+   - Hapus baris kosong.
+   - Atur ulang tipe kolom mata uang dengan lokal yang sesuai.
+   - Ganti nama kolom yang ganda. Data punya dua kolom berjudul `Status Order`: satu berisi status pesanan (Completed, Pending, Canceled, Return) dan satu berisi metode pembayaran (COD, E-wallet, Transfer, VA). Kolom kedua diganti menjadi `Metode_Pembayaran`.
+   - Muat hasilnya dengan **Close & Load** ke sheet `Data_bersih`, yang menjadi sumber semua PivotTable.
+3. **Pembuatan PivotTable:** satu PivotTable per ukuran di sheet `Pivot` dari tabel `Data_bersih` (penjualan bulanan, metode pembayaran, transaksi per kota, penjualan per produk).
 4. **Pembuatan PivotChart:** ubah tiap PivotTable menjadi grafik.
 5. **Pembuatan KPI:** Total Transaksi, Kuantitas, Total Sales, dan Grand Total.
-6. **Filter interaktif:** pasang Slicer (Produk, Metode Pembayaran, Kota) dan Timeline (Tanggal), lalu hubungkan ke semua PivotTable.
-7. **Penyusunan tampilan:** susun KPI, grafik, dan filter di sheet `Dashboard`.
-
-> ⚠️ Langkah di atas disusun dari isi README. Sesuaikan dengan proses yang benar-benar Anda lakukan.
+6. **Pembuatan Slicer dan Timeline:** klik salah satu PivotTable, lalu pilih **Insert > Slicer** dan centang field Product, Metode_Pembayaran, dan Kota. Untuk tanggal, pilih **Insert > Timeline** dan centang field Order_date.
+7. **Menghubungkan filter ke semua PivotTable:** klik kanan tiap Slicer, pilih **Report Connections**, lalu centang semua PivotTable. Ulangi untuk Timeline. Dengan begitu satu klik filter mengubah semua grafik dan KPI sekaligus.
+8. **Merapikan Slicer dan Timeline:** atur ukuran, jumlah kolom tombol, dan warna lewat tab **Slicer** agar seragam dan mudah diklik.
+9. **Penyusunan dashboard:** pindahkan KPI, grafik, Slicer, dan Timeline ke sheet `Dashboard`. Tata letak: KPI di atas, filter di sisi samping atau atas, grafik di tengah. Matikan gridlines dan beri judul.
+10. **Pengujian:** coba tiap filter (satu produk, satu kota, rentang tanggal) dan pastikan semua grafik serta KPI ikut berubah.
 
 ## Isi Dashboard
 
@@ -74,6 +82,7 @@ Dashboard penjualan interaktif untuk UMKM alat tulis kantor (ATK), dibuat dengan
 | Sheet | Isi |
 |---|---|
 | Data | Data transaksi mentah |
+| Data_bersih | Hasil pembersihan Power Query, sumber semua PivotTable |
 | Dashboard | Tampilan utama (KPI, grafik, filter) |
 | Pivot | PivotTable sumber grafik |
 
